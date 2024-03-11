@@ -1,0 +1,53 @@
+package com.example.demo.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
+
+import com.example.demo.dto.KorisnikDTO;
+import com.example.demo.dto.VezbaDTO;
+import com.example.demo.repositories.KorisniciRepository;
+
+@Controller
+public class MainController {
+	@Autowired
+	KorisniciRepository kr;
+	
+	@GetMapping("/")
+    public String home() {
+		return "redirect:/vezbe/sveVezbe";
+    }
+	
+	@GetMapping("login")
+    public String login() {
+		return "login";
+    }
+	
+	@GetMapping("register")
+    public String register() {
+		return "register";
+    }
+	
+	@ModelAttribute("korisnikDTO")
+	public KorisnikDTO newFile () {
+		return new KorisnikDTO();
+	}
+	
+	@PostMapping("sacuvajNalog")
+	public String sacuvajVezbu(@ModelAttribute("vezbaDTO") VezbaDTO file, Model m) {
+		boolean ok = vs.saveVezba(file, "/Users/milan/Projects/College/RIS/FitTracker/FitTrackerWeb/src/main/webapp/images");
+		
+		if (ok) {
+			m.addAttribute("message", "Vežba je uspešno dodata.");
+		} else {
+			m.addAttribute("message", "Dodavanje vežbe nije uspelo.");
+		}
+		
+		return "nova-vezba";
+	}
+}

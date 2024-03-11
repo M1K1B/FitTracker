@@ -1,0 +1,8 @@
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import model.Omiljene;
+
+public interface OmiljeneRepository extends JpaRepository<Omiljene, Integer> {
+	@Query("SELECT o.vezbe FROM Omiljene o WHERE o.korisnici.idKorisnika = :korisnikId")
+    List<Vezbe> findVezbeByKorisnikId(@Param("korisnikId") int korisnikId);
+}

@@ -1,0 +1,80 @@
+package com.example.demo.controllers;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.demo.dto.KorisnikDTO;
+import com.example.demo.dto.VezbaDTO;
+import com.example.demo.repositories.KorisniciRepository;
+import com.example.demo.services.KorisniciService;
+
+@Controller
+public class MainController {
+	@Autowired
+	KorisniciService ks;
+	
+	@GetMapping("/")
+    public String home() {
+		return "redirect:/vezbe/sveVezbe";
+    }
+	
+	@GetMapping("login")
+    public String login() {
+		return "login";
+    }
+	
+	@GetMapping("register")
+    public String register() {
+		return "register";
+    }
+	
+	@GetMapping("logout")
+    public String logout() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return "redirect:/vezbe/sveVezbe"; // Redirect to the login page after logout
+    }
+	
+	@ModelAttribute("korisnikDTO")
+	public KorisnikDTO newFile () {
+		return new KorisnikDTO();
+	}
+	
+	@ModelAttribute("authentificatedUser")
+	public Authentication authUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		return auth;
+	}
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(true);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+	}
+	
+	@PostMapping("sacuvajNalog")
+	public String sacuvajVezbu(@ModelAttribute("korisnikDTO") KorisnikDTO file, Model m) {
+		int ok = ks.uploadKorisnik(file);
+		
+		if (ok != -1) {
+			m.addAttribute("message", "Vaš nalog je uspešno napravljen.");
+		} else {
+			m.addAttribute("message", "Vaš nalog nije napravljen.");
+		}
+		
+		return "register";
+	}
+}

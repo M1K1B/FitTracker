@@ -1,0 +1,45 @@
+package com.example.demo.services;
+
+import java.io.File;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.dto.VezbaDTO;
+import com.example.demo.repositories.KorisniciRepository;
+import com.example.demo.repositories.MisiciRepository;
+import com.example.demo.repositories.PogadjaRepository;
+import com.example.demo.repositories.VezbeRepository;
+
+
+@Service
+public class KorisniciService {
+	@Autowired
+	KorisniciRepository kr;
+
+	public int uploadVezba(VezbaDTO vezba, String slikaPth) {
+		Vezbe nova = new Vezbe();
+
+		nova.setNaziv(vezba.getNaziv());
+		nova.setOcena(5);
+		nova.setOpis(vezba.getOpis());
+		nova.setSlika(slikaPth);
+
+		try {
+			
+			Vezbe nv = vr.save(nova);
+			
+			Pogadja pog = new Pogadja();
+			pog.setMisici(mr.findById(vezba.getMisicId()).get());
+			pog.setVezbe(nv);
+			pr.save(pog);
+			
+			return nv.getIdVezbe();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+}

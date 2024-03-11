@@ -1,0 +1,46 @@
+package com.example.demo.dto;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class TreningDTO {
+	private String naziv;
+	private Date datum;
+	//private List<Integer> idVezbi= new ArrayList<Integer>();
+	private int[] idVezbi;
+	private int[] serije;
+	private int[] ponavljanja;
+	
+	public String getNaziv() {
+		return naziv;
+	}
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+	public Date getDatum() {
+		return datum;
+	}
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
+	
+public int[] getIdVezbi() {
+		return idVezbi;
+	}
+	public void setIdVezbi(int[] idVezbi) {
+		this.idVezbi = idVezbi;
+	}
+	public int[] getSerije() {
+		return serije;
+	}
+	public void setSerije(int[] serije) {
+		this.serije = serije;
+	}
+	public int[] getPonavljanja() {
+		return ponavljanja;
+	}
+	public void setPonavljanja(int[] ponavljanja) {
+		this.ponavljanja = ponavljanja;
+	}
+}

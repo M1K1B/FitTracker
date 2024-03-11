@@ -1,0 +1,70 @@
+package com.example.demo.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.dto.VezbaDTO;
+import com.example.demo.services.MisiciService;
+import com.example.demo.services.VezbeService;
+
+import model.Misici;
+import model.Vezbe;
+
+@Controller
+@RequestMapping("/vezbe/")
+public class VezbeController {
+	@Autowired
+	MisiciService ms;
+	
+	@Autowired
+	VezbeService vs;
+	
+	@GetMapping("sveVezbe")
+	public String sveVezbe (@RequestParam(name = "searchQuery", required = false, defaultValue="") String searchQuery, @RequestParam(name = "misicId", required = false, defaultValue="-1") Integer idMisica, @RequestParam(name = "samoOmiljeni", required = false, defaultValue=false) String samoOmiljeni, Model m) {
+		m.addAttribute("vezbe", vs.getVezbe());
+		return "index";
+	}
+	
+	@GetMapping("dodajVezbu")
+	public String dodajVezbu () {
+		return "nova-vezba";
+	}
+	
+	@ModelAttribute("misici")
+	public List<Misici> getMisici() {
+		return ms.getMisici();
+	}
+	
+//	@ModelAttribute("vezbe")
+//	public List<Vezbe> getVezbe() {
+//		return vs.getVezbe();
+//	}
+	
+	@ModelAttribute("vezbaDTO")
+	public VezbaDTO newFile () {
+		return new VezbaDTO();
+	}
+	
+	
+	@PostMapping("sacuvajVezbu")
+	public String sacuvajVezbu(@ModelAttribute("vezbaDTO") VezbaDTO file, Model m) {
+		boolean ok = vs.saveVezba(file, "/Users/milan/Projects/College/RIS/FitTracker/FitTrackerWeb/src/main/webapp/images");
+		
+		if (ok) {
+			m.addAttribute("message", "Vežba je uspešno dodata.");
+		} else {
+			m.addAttribute("message", "Dodavanje vežbe nije uspelo.");
+		}
+		
+		return "nova-vezba";
+	}
+	
+}

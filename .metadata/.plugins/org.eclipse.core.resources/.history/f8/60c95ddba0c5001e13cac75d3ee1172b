@@ -1,0 +1,39 @@
+package com.example.demo.misc;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.Payload;
+
+@Documented
+@Constraint(validatedBy = PositiveIntArray.class)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PositiveIntArray {
+    String message() default "All elements in the array must be positive";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+
+public class PositiveIntArray implements ConstraintValidator<PositiveIntArray, int[]> {
+
+    @Override
+    public boolean isValid(int[] array, ConstraintValidatorContext context) {
+        if (array == null) {
+            return true; // Null arrays are considered valid
+        }
+        for (int num : array) {
+            if (num <= 0) {
+                return false; // Found a non-positive element
+            }
+        }
+        return true; // All elements are positive
+    }
+}

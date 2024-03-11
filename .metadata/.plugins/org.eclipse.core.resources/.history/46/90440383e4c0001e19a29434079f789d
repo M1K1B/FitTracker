@@ -1,0 +1,42 @@
+package com.example.demo.dto;
+
+import java.util.Date;
+
+public class TreningDTO {
+	private String naziv;
+	private Date datum;
+	private int[] idVezbi;
+	private int[] serije;
+	private int[] ponavljanja;
+	
+	public String getNaziv() {
+		return naziv;
+	}
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+	public Date getDatum() {
+		return datum;
+	}
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
+	public int[] getIdVezbi() {
+		return idVezbi;
+	}
+	public void setIdVezbi(int[] nazivVezbi) {
+		this.idVezbi = nazivVezbi;
+	}
+	public int[] getSerije() {
+		return serije;
+	}
+	public void setSerije(int[] serije) {
+		this.serije = serije;
+	}
+	public int[] getPonavljanja() {
+		return ponavljanja;
+	}
+	public void setPonavljanja(int[] ponavljanja) {
+		this.ponavljanja = ponavljanja;
+	}
+}

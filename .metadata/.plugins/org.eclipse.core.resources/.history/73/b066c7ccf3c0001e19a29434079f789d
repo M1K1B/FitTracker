@@ -1,0 +1,54 @@
+package com.example.demo.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.TreningDTO;
+import com.example.demo.repositories.KorisniciRepository;
+import com.example.demo.repositories.TreninziRepository;
+
+import model.Korisnici;
+import model.Pogadja;
+import model.Treninzi;
+import model.Vezbe;
+
+@Service
+public class TreninziService {
+	@Autowired
+	TreninziRepository tr;
+	
+	@Autowired
+	KorisniciRepository kr;
+	
+	public List<Treninzi> getTreninzi() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Korisnici k = kr.findByUsername(authentication.getName());
+		
+		return tr.findAllByUser(k.getIdKorisnika());
+	}
+	
+	public int uploadTrening(TreningDTO trening) {
+		Treninzi novi = new Treninzi();
+		
+		System.out.println(trening);
+
+		try {
+			
+			//Vezbe nv = vr.save(nova);
+			
+//			Pogadja pog = new Pogadja();
+//			pog.setMisici(mr.findById(vezba.getMisicId()).get());
+//			pog.setVezbe(nv);
+//			pr.save(pog);
+//			
+//			return nv.getIdVezbe();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+}

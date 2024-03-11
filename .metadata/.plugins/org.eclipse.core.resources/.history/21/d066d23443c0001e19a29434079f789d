@@ -1,0 +1,47 @@
+package com.example.demo.services;
+
+import java.io.File;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.dto.KorisnikDTO;
+import com.example.demo.dto.VezbaDTO;
+import com.example.demo.repositories.KorisniciRepository;
+import com.example.demo.repositories.MisiciRepository;
+import com.example.demo.repositories.PogadjaRepository;
+import com.example.demo.repositories.VezbeRepository;
+
+import model.Korisnici;
+
+
+@Service
+public class KorisniciService {
+	@Autowired
+	KorisniciRepository kr;
+
+	public int uploadVezba(KorisnikDTO korisnik) {
+		Korisnici novi = new Korisnici();
+
+		novi.setIme(korisnik.getIme());
+		novi.setPrezime(korisnik.getPrezime());
+		novi.setEmail(korisnik.getEmail());
+		novi.setLozinka(com.example.demo.security.PasswordEncoder.encode(korisnik.getLozinka()));
+		novi.setVisina(korisnik.getVisina());
+		novi.setTezina(korisnik.getTezina());
+		novi.setDatumRodjenja(korisnik.getDatumRodjenja());
+
+		try {
+			Korisnici nk = kr.save(novi);
+			
+			return nk.getIdKorisnika();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+}

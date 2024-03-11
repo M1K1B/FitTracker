@@ -1,0 +1,31 @@
+package com.example.demo.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.demo.services.TreninziService;
+
+import model.Treninzi;
+
+
+@Controller
+@RequestMapping("/treninzi/")
+public class TreninziController {
+	@Autowired
+	TreninziService ts;
+	
+	@GetMapping("sviTreninzi")
+	public String sviTreninzi() {
+		return "treninzi";
+	}
+	
+	@ModelAttribute("treninzi")
+	public List<Treninzi> getTreninzi () {
+		return ts.getTreninzi();
+	}
+}

@@ -1,0 +1,11 @@
+package com.example.demo.dto;
+
+import java.util.Date;
+
+public class TreningDTO {
+	private String naziv;
+	private Date datum;
+	private String[] nazivVezbi;
+	private int[] serije;
+	private int[] ponavljanja;
+}
